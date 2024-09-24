@@ -1,9 +1,9 @@
 # Actividad: Bandera serie.
 
 # A rellenar por el alumno/grupo
- * Nombre y apellidos alumno 1   : < .... >
- * Nombre y apellidos alumno 2   : < .... >
- * Nombre y apellidos alumno 3   : < .... >
+ * Nombre y apellidos alumno 1   : < Franco Sergio Pereyra GT3 >
+ * Nombre y apellidos alumno 2   : < Rosa Maria Lopez GT2 >
+ * Nombre y apellidos alumno 3   : < David Guil GT2 >
  * Mayoría en GTA1, GTA2 o GTA3  : < .... >
  * Nombre de grupo de actividades: < .... >
 
@@ -17,12 +17,12 @@ Ver la información del micro en Internet. Otra información se puede ver con lo
 A la BIOS se accede justo después de arrancar pulsando ESC, F1 o F2.
 
 ## Arquitectura: 
-  * Microprocesador:
-  * Número de núcleos:
-  * Cantidad de subprocesos por nucleo:
-  * Tiene hyperthreading (SMT) activado en BIOS:
-  * HDD/SDD: 
-  * RAM:
+  * Microprocesador: Intel core I5-10500 CPU @ 3.10GHz
+  * Número de núcleos: 6
+  * Cantidad de subprocesos por nucleo: 12
+  * Tiene hyperthreading (SMT) activado en BIOS: si
+  * HDD/SDD: 500G
+  * RAM: 16G
   * Se usa máquina virtual:
     - Número de cores:
     - RAM: 
@@ -89,7 +89,7 @@ Hay que evaluar si hay alguna perdida de memoria.
 $ valgrind ./Bandera -r 300 -c 400
 ```
 1. **Muestra aquí la salida de pantalla:**
-
+![captura](img/captura.png)
 2. **¿Hay perdida de memoria?**
 
 3. **¿Qué has tenido que corregir en Bandera.c para que no haya perdida de memoria**. 
