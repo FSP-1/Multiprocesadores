@@ -4,8 +4,8 @@
  * Nombre y apellidos alumno 1   : < Franco Sergio Pereyra GT3 >
  * Nombre y apellidos alumno 2   : < Rosa Maria Lopez GT2 >
  * Nombre y apellidos alumno 3   : < David Guil GT2 >
- * Mayoría en GTA1, GTA2 o GTA3  : < .... >
- * Nombre de grupo de actividades: < .... >
+ * Mayoría en GTA1, GTA2 o GTA3  : < GT2 >
+ * Nombre de grupo de actividades: < GT2-2 y GT3-2 >
 
 
 # Descripción de la arquitectura utilizada:
