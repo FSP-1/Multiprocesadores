@@ -90,13 +90,15 @@ $ valgrind ./Bandera -r 300 -c 400
 ```
 1. **Muestra aquí la salida de pantalla:**
 ![captura](img/captura.png)
-2. **¿Hay perdida de memoria?**
 
+2. **¿Hay perdida de memoria?**
+	Si
+	
 3. **¿Qué has tenido que corregir en Bandera.c para que no haya perdida de memoria**. 
 * Hay que entregar el Bandera.c corregido. 
 
 4. **Muestra aquí la salida de pantalla del comando valgrind sobre Bandera sin perdida de memoria.**
-
+![captura](img/captura2.png)
 - - - 
 ## Parte 2: Mejorar el rendimiento.
 
