@@ -22,7 +22,7 @@ void ParametersError()
 int main(int argc, char **argv)
 {
  int Rows, Cols;
- char ** ppRed, ** ppGreen; /* ** ppBlue*/  //Matrices de RGB (0..255)
+ char ** ppRed, ** ppGreen, ** ppBlue ; //Matrices de RGB (0..255)
  char *FileName=NULL;
  FILE * FOut;
  char Command[256];
@@ -76,17 +76,17 @@ int main(int argc, char **argv)
  /*Calloc de Getmen put data to zeroes*/
  ppRed   = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppRed");
  ppGreen = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppGreen");
-//( ppBlue  = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppBlue");
+ ppBlue  = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppBlue");
 
 
  #if (PRINT==1)
  printf("Rows/4=%d, Rows*3/4=%d\n", Rows/4, Rows*3/4);
  #endif
 
- /*Red*/
- for (int i=0; i<Rows; i++){
-     for (int j=0; j<Cols; j++){
-
+ 
+  for (int j=0; j<Cols; j++){
+ 	for (int i=0; i<Rows; i++){
+  
 	 if (i < Rows/4 ){
              ppRed[i][j]=(char)255;
              continue;
@@ -104,26 +104,6 @@ int main(int argc, char **argv)
       }
 }
 
-
-
-/* 
- for (int i=0; i<Rows/4; i++)
-     for (int j=0; j<Cols; j++)
-          ppRed[i][j]=(char)255;
-
- 
- for (int i=Rows/4; i<Rows*3/4; i++)
-     for (int j=0; j<Cols; j++)
-         {
-          ppRed  [i][j]=(char)255;
-          ppGreen[i][j]=(char)255;
-         }
-
- 
- for (int i=Rows*3/4; i<Rows; i++)
-     for (int j=0; j<Cols; j++)
-          ppRed[i][j]=(char)255;
- */
  if (GenImage)
     {
      //Print to file
@@ -131,9 +111,9 @@ int main(int argc, char **argv)
 	 for (int i=0;i<Rows;i++)
 		 for (int j=0;j<Cols;j++)
 		     {
-		      fwrite(&ppRed  [i][j],sizeof(char),(size_t)1,FOut);
+		          fwrite(&ppRed  [i][j],sizeof(char),(size_t)1,FOut);
 			  fwrite(&ppGreen[i][j],sizeof(char),(size_t)1,FOut);
-			//  fwrite(&ppBlue [i][j],sizeof(char),(size_t)1,FOut);
+			  fwrite(&ppBlue [i][j],sizeof(char),(size_t)1,FOut);
 		     }
 	 CloseFile(FOut);
 
@@ -150,7 +130,7 @@ int main(int argc, char **argv)
 	 /* eog from gnome visualize the image when it change*/
 	}
  //Free allocated memory
-// Free2D((void **)ppBlue, Rows);
+ Free2D((void **)ppBlue, Rows);
  Free2D((void **)ppGreen,Rows);
  Free2D((void **)ppRed,  Rows);
 

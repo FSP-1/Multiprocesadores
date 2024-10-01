@@ -22,7 +22,7 @@ void ParametersError()
 int main(int argc, char **argv)
 {
  int Rows, Cols;
- char ** ppRed, ** ppGreen;  /* ** ppBlue */  //Matrices de RGB (0..255)
+ char ** ppRed, ** ppGreen,  ** ppBlue ;  //Matrices de RGB (0..255)
  char *FileName=NULL;
  FILE * FOut;
  char Command[256];
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
  /*Calloc de Getmen put data to zeroes*/
  ppRed   = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppRed");
  ppGreen = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppGreen");
-// ppBlue  = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppBlue");
+ppBlue  = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppBlue");
 
 
  #if (PRINT==1)
@@ -111,7 +111,7 @@ int main(int argc, char **argv)
 		     {
 		      fwrite(&ppRed  [i][j],sizeof(char),(size_t)1,FOut);
 			  fwrite(&ppGreen[i][j],sizeof(char),(size_t)1,FOut);
-			 // fwrite(&ppBlue [i][j],sizeof(char),(size_t)1,FOut);
+			  fwrite(&ppBlue [i][j],sizeof(char),(size_t)1,FOut);
 		     }
 	 CloseFile(FOut);
 
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 	 /* eog from gnome visualize the image when it change*/
 	}
  //Free allocated memory
- //Free2D((void **)ppBlue, Rows);
+ Free2D((void **)ppBlue, Rows);
  Free2D((void **)ppGreen,Rows);
  Free2D((void **)ppRed,  Rows);
 
