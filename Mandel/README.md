@@ -68,13 +68,22 @@ $ ./Mandel -h
  * Hay que entregar el fichero modificado. Ver las líneas comentadas con "//TODO:".
 
 1. **¿Has verificado que la imagen se genera correctamente?**
+   
 la imagen en gris funciona perfectamente y el de color tambien
 
-![captura](img/captura1.png)
+![captura](img/mandelbrot_color.png)
+![captura](img/mandelbrot_gris.png)
 
 3. **¿Has verificado que no tienes perdida memoria?** 
 
+si, al hacer valgrind tanto para gris como color, no surge perdidas de memoria
+
+![captura](img/Captura1.png)
+![captura](img/Captura2.png)
+
 4.  **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
+   
+Si
 
 - - - 
 ### Como ver este .md 
