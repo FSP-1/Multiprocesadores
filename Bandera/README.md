@@ -95,7 +95,8 @@ $ valgrind ./Bandera -r 300 -c 400
 	Si
 	
 3. **¿Qué has tenido que corregir en Bandera.c para que no haya perdida de memoria**. 
-* Hay que entregar el Bandera.c corregido. 
+* Hay que entregar el Bandera.c corregido.
+  
  Habia que descomentar " Free2D((void **)ppBlue, Rows);" ya que no estaba liberando la memoria de ppBlue produciendo perdida de memoria.
  
 4. **Muestra aquí la salida de pantalla del comando valgrind sobre Bandera sin perdida de memoria.**
@@ -118,16 +119,22 @@ $ valgrind ./Bandera -r 300 -c 400
 **Nota**: 1 kB =1024 bytes.
 
 5. **¿Que valor de Rows=Cols has elegido? ¿Cuanta memoria coge el programa con GetMem para imagen?** 
+
 He escogido 10240 , y escogeria 10240 memoria ya que estamos trabajando con char y para escribir la imagen usamos los tres arrays, entonces estariamos escogiendo 10240 * 3 de memoria.
+
 6. **Mostrar el menor tiempo real de varias ejecuciones de la salida de:**
 ```console 
 & time ./Bandera -r Rows -c Cols
 ```
 ![captura](img/captura3.png)
+
 7. **¿Que algoritmo tiene menor tiempo de ejecución, Bandera o Bandera2?**
 * Muestra los tiempos de Bandera2.c
+  
 Bandera
+
 ![captura](img/captura4.png)
+
 **Ejecutar el comando:**
 ```console 
 & perf stat -r 3 -d ./Bandera2 -r Rows -c Cols
@@ -146,10 +153,12 @@ Bandera
  * Hay que usar Rows=Cols de 5.
  * (7) Muestra los tiempos de Bandera2 primero columnas.
  * (8) Muestra los resultados de perf stat para Bandera2 primero columnas.
+   
 ![captura](img/captura5.png)
-10. **¿Cuando se tienen más fallos de cache, visitando la matriz primero por filas o primero por columnas? ¿Porqué?** 
+
+10. **¿Cuando se tienen más fallos de cache, visitando la matriz primero por filas o primero por columnas? ¿Porqué?**
 Visitando primero por columnas, si recorres la matriz por columnas, estarás accediendo a elementos que no están contiguos en la memoria. Esto significa que cada vez que cambias de fila, es muy probable que tengas que cargar un nuevo bloque de memoria en caché, lo que genera más fallos.
-11. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
+12. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
 Si
 - - - 
 ### Como ver este .md en el navegador
