@@ -217,11 +217,7 @@ int main(int argc, char **argv)
           if (!InGray)
              {
               //TODO: update RGB matrices of pixel [i][i] using NIterToRGB()
-              char pRed, pGreen, pBlue;
-              NIterToRGB(NIter,&pRed,&pGreen,&pBlue);
-              ppRed[i][j]=pRed;
-              ppGreen[i][j]=pGreen;
-              ppBlue[i][j]=pBlue;
+                 NIterToRGB(NIter, &ppRed[i][j], &ppGreen[i][j], &ppBlue[i][j]);
              }
 
          }
@@ -270,7 +266,7 @@ int main(int argc, char **argv)
  if (!InGray)
     {
      //TODO: Generate the string with the command to move from RGB raw to png.
-     sprintf(Command,"rawtopgm %d %d %s | pnmtopng > %s.png", 
+     sprintf(Command,"rawtoppm %d %d %s | pnmtopng > %s.png", 
                     Cols,Rows, FileName, FileName);
  
  
