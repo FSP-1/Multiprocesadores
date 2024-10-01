@@ -68,10 +68,13 @@ $ ./Mandel -h
  * Hay que entregar el fichero modificado. Ver las líneas comentadas con "//TODO:".
 
 1. **¿Has verificado que la imagen se genera correctamente?**
-la imagen en gris funciona perfectamente.
-2. **¿Has verificado que no tienes perdida memoria?** 
+la imagen en gris funciona perfectamente y el de color tambien
 
-3.  **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
+![captura](img/captura1.png)
+
+3. **¿Has verificado que no tienes perdida memoria?** 
+
+4.  **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
 
 - - - 
 ### Como ver este .md 
