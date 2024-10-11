@@ -1,22 +1,24 @@
 # Actividad Wa-tor serie:
 
 ## A rellenar por el alumno
- * Nombre y apellidos alumno 1   : 
- * Nombre y apellidos alumno 2   : 
- * Nombre y apellidos alumno 3   : 
- * Mayoría en GTA1, GTA2 o GTA3  : 
- * Nombre de grupo de actividades: 
+ * Nombre y apellidos alumno 1   : < Franco Sergio Pereyra GT3 >
+ * Nombre y apellidos alumno 2   : < Rosa Maria Lopez GT2 >
+ * Nombre y apellidos alumno 3   : < David Guil GT2 >
+ * Mayoría en GTA1, GTA2 o GTA3  : < GT2 >
+ * Nombre de grupo de actividades: < GT2-2 y GT3-2 >
 
 ## Descripción de la arquitectura utilizada: 
-  * Microprocesador:
-  * Número de núcleos:
-  * Cantidad de subprocesos por núcleo:
-  * Tiene hyperthreading (SMT) activado en BIOS:
-  * RAM:
+  * Microprocesador: Intel core I5-10500 CPU @ 3.10GHz
+  * Número de núcleos: 6
+  * Cantidad de subprocesos por nucleo: 12
+  * Tiene hyperthreading (SMT) activado en BIOS: si
+  * HDD/SDD: 500G
+  * RAM: 16G
   * Se usa máquina virtual:
     - Número de cores:
     - RAM: 
     - Capacidad HDD: 
+
 
 ## Instrucciones:
 * El alumno debe realizar la rutina de iteración de un pez.
@@ -69,10 +71,10 @@ $ ./Wa-tor -h
 * Wa-tor, si se le indica **-ffmpeg**, usa la aplicación **ffplay** que hay que instalar para visualizar la evolución de los peces en formato video raw.
 * Antes de ejecutar Wa-tor hay que ver que no hay otra instancia corriendo:
 ```console
-$ps aux  | grep Wa-tor
-$ps aux  | grep eog
-$ps aux  | grep gnouplot
-$ps aux  | grep ffplay
+ps aux  | grep Wa-tor
+ps aux  | grep eog
+ps aux  | grep gnouplot
+ps aux  | grep ffplay
 
 ```
 de **Wa-tor** o en su caso **eog**, **gnuplot**, y/o **ffplay**. En tal caso hay que matar el proceso necesario con:
@@ -89,16 +91,32 @@ $ kill -9 <pid>
 
 Para realizar el archivo hay que usar el flag "-pg" en los comandos de gcc para cuando se ejecute el archivo Wa-tor con "./Wa-tor" se crea un archivo gmon.out. Por último, con el comando "gprof Wa-tor gmon.out > Profiling.txt" para hacer el profiling del programa y poner los resultados en un archivo de texto.
 
+
 2. **En el fichero Profiling.txt con la salida del gprof del programa, ¿Que rutinas consumen más tiempo?**
 
+Las rutinas que consumen más tiempo según el archivo Profiling.txt generado por el gprof del programa son las siguientes:
+* IterateOcean: Esta función consume el 100% del tiempo total (0.03 segundos), ya que es llamada por el programa principal (main) y, a su vez, llama a otras dos funciones principales: IterateFish y IterateShark.
+* IterateFish: Consume un 33.33% del tiempo (0.01 segundos de los 0.03 totales) y es llamada 32,615 veces dentro de IterateOcean.
+* IterateShark: También consume un 33.33% del tiempo (0.01 segundos de los 0.03 totales) y es llamada 20,806 veces dentro de IterateOcean.
+  
 3. **Indica los comandos que has realizado para hacer el chequeo de perdida de memoria.**
+
+valgrind --leak-check=full --show-leak-kinds=all ./Wa-tor -ni 10000  > MemProf.txt
+ * --leak-check=full: Realiza un análisis exhaustivo de las fugas de memoria.
+ * --show-leak-kinds=all: Muestra todos los tipos de fugas (definitivas, indirectas, posibles, y memoria todavía alcanzable).
 
 4. **En el fichero Memprof.txt que has generado con la salida de valgrind, ¿Existen perdidas de memoria?**
 
+No
+
 5. **¿Existen ejecuciones en las que no se llegan al número establecido de iteraciones? ¿Porqué?**
 
-6.  **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
+Si como por ejemplo ./Wa-tor -r 100 -c 100 -nf 100 -ns 5000 -ni 1000
+Esto es debido a con un número tan bajo de peces, los tiburones no podrán alimentarse adecuadamente. Según las reglas del programa, los tiburones pierden energía si no logran comer, y si la energía de un tiburón llega a cero, muere. Si todos los tiburones se quedan sin energía, la población de tiburones comenzará a disminuir rápidamente.
+Esto lleva a que se interrumpa la simulación ya que los tiburones se mueren antes de que se completen las 1000 iteraciones.
 
+6.  **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
+Si
 - - -
 
 # Actividad Wa-tor: reglas.
