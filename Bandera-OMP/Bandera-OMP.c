@@ -98,51 +98,7 @@ int main(int argc, char **argv)
  gettimeofday(&tv1, &tz);
  # endif
  
- # ifdef _OPENMP
- //CsPar: Codigo secuencial a paralelizar.
- //TODO 
- i= 0;
- j= 0;
- 
-
-
-        chunk=10;
-   
-   
- #if (PRINT==1)
- printf("Chunk=%d \n", chunk);
- #endif
-
- double wt1,wt2;
-# endif
-
- #ifdef _OPENMP //Paralelizado
-    #pragma omp parallel shared(ppGreen,ppRed) private(i,j)
-       {
- 
-       # ifdef _OPENMP
-          wt1=omp_get_wtime();
-       # endif
-      tid = omp_get_thread_num();
-
-       #pragma omp for schedule(static,chunk)
- 	for (i=0; i<Rows; i++)
- 	    for (j=0; j<Cols; j++)
-   	      {
-   	      printf("Hello World from thread = %d\n", tid);
-    	      ppRed[i][j]=(char)255;
-    	      
-    	      if (i>=Rows/4 && i<=Rows*3/4)
-    	         ppGreen[i][j]=(char)255;
-   	      }
-   	      
-     # ifdef _OPENMP
-       wt2=omp_get_wtime();
-    # endif
-  }
-# endif
-
-# ifndef _OPENMP //Serializado
+ # ifndef _OPENMP //Serializado
   for (i=0; i<Rows; i++)
      for (j=0; j<Cols; j++)
          {
@@ -151,14 +107,51 @@ int main(int argc, char **argv)
              ppGreen[i][j]=(char)255;
          }
 #endif   
+
  # ifndef _OPENMP //T.CsPar
    gettimeofday(&tv2, &tz);
    printf("T.CsPar (gettimeofday) = %g sec.\n", 
          (tv2.tv_sec- tv1.tv_sec) + (tv2.tv_usec-tv1.tv_usec)*1e-6 );
  # endif
-# ifdef _OPENMP
-    printf( "wall clock time (omp_get_wtime) = %12.4g sec\n", wt2-wt1 );
+ 
+ # ifdef _OPENMP //CsPar: Codigo secuencial a paralelizar.
+ //TODO 
+ i= 0;
+ j= 0;
+ double wt1,wt2;
+ int num_threads = omp_get_num_threads();
+ int total_work = Rows * Cols;
+ //chunk = (total_work + num_threads - 1) / num_threads; // Redondeo hacia arriba
+
+ wt1=omp_get_wtime();
+
+       
+    #pragma omp parallel shared(ppGreen,ppRed) private(i,j,tid)
+       {
+ 
+      tid = omp_get_thread_num();
+
+       #pragma omp for schedule(static,chunk) 
+ 	for (i=0; i<Rows; i++)  
+ 	 	      printf("Hello World from thread = %d\n", tid);
+ 	    for (j=0; j<Cols; j++)
+   	      {
+
+    	      ppRed[i][j]=(char)255;
+    	      
+    	      if (i>=Rows/4 && i<=Rows*3/4)
+    	         ppGreen[i][j]=(char)255;
+   	      }
+   	      
+       
+  }
+
+ wt2=omp_get_wtime();
+
+ printf( "wall clock time (omp_get_wtime) = %12.4g sec\n", wt2-wt1 );
 # endif
+
+
  if (GenImage)
 	{
 	 //Print to file
