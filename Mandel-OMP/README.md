@@ -9,12 +9,12 @@
 
 # Descripción de la arquitectura utilizada:
 ## Arquitectura: 
-  * Microprocesador:
-  * Número de núcleos:
-  * Cantidad de subprocesos por núcleo:
-  * Tiene hyperthreading (SMT) activado en BIOS:
-  * HDD/SDD: 
-  * RAM:
+ * Microprocesador: Intel core I5-10500 CPU @ 3.10GHz
+ * Número de núcleos: 6
+ * Cantidad de subprocesos por nucleo: 12
+ * Tiene hyperthreading (SMT) activado en BIOS:Si
+ * HDD/SDD: 500G
+ * RAM:16G
   * Se usa máquina virtual:
     - Número de cores:
     - RAM: 
