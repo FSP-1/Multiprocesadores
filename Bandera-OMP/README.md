@@ -170,7 +170,7 @@ $ localc Speed-up.ods
 
 8. **Describe qué realiza el schedule(static) y qué chunk usa por defecto.**
 
-  * int chunk_size = total_iterations / num_threads; // Tamaño del chunk
+* El schedule(static) distribuye las iteraciones del bucle entre los hilos de forma equitativa en bloques o chunks fijos. Por defecto, sin especificar el tamaño del chunk, el tamaño es calculado automáticamente como el número total de iteraciones dividido por el número de hilos.
   
 9. **Rellena la siguiente tabla para la versión paralela. Se usará schedule(static) sin establecer el chunk.** 
 
@@ -193,7 +193,7 @@ $ export OMP_NUM_THREADS=4
 
 10. **¿Es el SpA(p) distinto del SP(p)? ¿Porqué?**
   
-  * Si
+  * Si, Esto es Dado a que SpA(p) incluye el overhead de la paralelización y otros aspectos de la configuración del programa que no se consideran en Sp(p), haciendo que los valores de SpA(p) tiendan a ser más bajos que los de Sp(p)
   
 11. **Teóricamente, ¿Mejoraría el Sp() si se establece el tamaño del chunk en el  schedule(static,chunk)? ¿Y si se usa otro scheduler?**
 
@@ -229,6 +229,7 @@ $ export OMP_NUM_THREADS=4
 * sin colapse:
 ![captura](img/4.png)
 
+* Sí, el Sp(p) mejora significativamente al usar collapse(2), ya que optimiza la distribución del trabajo entre hilos, mejora la localización de datos en la cache, y reduce los TLB-load-misses y cache-misses. Esto permite un acceso más eficiente a la memoria y un mejor uso de los recursos paralelos disponibles, lo que se refleja en una mayor ganancia de velocidad.
 
 ## Experimentos con salida gráfica (-o España): 
 
@@ -262,9 +263,14 @@ $ time Bandera-OMP -r Rows -c Cols -o España
 16. **¿Porqué ahora el SpA() y Sp(p) son peores que en la tablas 6 y 9?** 
 * Responde usando como argumentos los porcentajes de código paralelizable y no paralelizable.
 
+* El SpA() y Sp(p) en las ejecuciones con salida gráfica son peores que en las tablas 6 y 9 debido a:
+ - Un mayor porcentaje de código no paralelizable relacionado con la creación y gestión de gráficos.
+ - El overhead de la paralelización y la menor fracción paralelizable del código.
+ - La naturaleza desigual del trabajo cuando se genera salida gráfica, lo que afecta la eficiencia del paralelismo.
 
 17. **¿Porque SpA(p) y Sp(p) no mejoran sustancialmente al aumentar el tamaño de la imagen?**
 
+* El SpA(p) y Sp(p) no mejoran sustancialmente con imágenes más grandes debido a que las operaciones secuenciales, como la escritura en archivos, los comandos externos y la gestión de memoria, se vuelven los factores limitantes a medida que el tamaño de la imagen aumenta. Estas operaciones no se benefician del paralelismo y dominan el tiempo de ejecución total, lo que impide obtener mejoras notables en la velocidad con más hilos o imágenes más grandes, según lo que predice la Ley de Amdahl.
 
 18. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
 
