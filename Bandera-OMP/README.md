@@ -114,11 +114,11 @@ $ ./Bandera-OMP -h
 
 2. **¿Cuanto es el valor de SpA(p) si p=1?**
 
- *1.02
+ * 1.02
  
 3. **¿Cuanto es el valor de SpA(p) si todo el código no es paralelizable?**
 
- *1.0
+ * 1.0
 
 4. **¿Cuanto es el valor de SpA(p) si se puede paralelizar todo el código?**
 
@@ -140,8 +140,8 @@ $ ./Bandera-OMP -h
 $ time Bandera-OMP -r Rows -c Cols
 ```
 
-T.CsPar:
-El tiempo del código secuencial que será paralelizado: relleno de las matrices ppRed, ppGreen y ppBlue. Ya está en el código la medición del tiempo secuencial que se tarda en la parte del código a paralelizar (bucles que establecen los colores de la bandera) de forma interna en el programa secuencial.
+* T.CsPar:
+* El tiempo del código secuencial que será paralelizado: relleno de las matrices ppRed, ppGreen y ppBlue. Ya está en  el código la medición del tiempo secuencial que se tarda en la parte del código a paralelizar (bucles que establecen los colores de la bandera) de forma interna en el programa secuencial.
 
 * Se adjunta una hoja de cálculo para calcular SpA() y Sp(). Hay que rellenar los campos T.Sec, T.CsPar, T(p) y p. Se visualiza ejecutando:
 
@@ -170,7 +170,7 @@ $ localc Speed-up.ods
 
 8. **Describe qué realiza el schedule(static) y qué chunk usa por defecto.**
 
-  * 20
+  * int chunk_size = total_iterations / num_threads; // Tamaño del chunk
   
 9. **Rellena la siguiente tabla para la versión paralela. Se usará schedule(static) sin establecer el chunk.** 
 
@@ -198,9 +198,11 @@ $ export OMP_NUM_THREADS=4
 11. **Teóricamente, ¿Mejoraría el Sp() si se establece el tamaño del chunk en el  schedule(static,chunk)? ¿Y si se usa otro scheduler?**
 
 * Si, con un chunk de 20 mejoraria de 0.15 a 0.11
+  
 ![captura](img/1.png)
 
 * Con dynamic:
+  
 ![captura](img/2.png)
 
 12. **¿Qué hace el collapse(2) en la directiva OMP?**
@@ -219,8 +221,10 @@ $ export OMP_NUM_THREADS=4
 **14. ¿Mejora el Sp(p)? ¿Porqué?**
  * Incluye y compara la salida de los rendimientos ( ```$ perf stat -r 3 -ddd programa < parámetros >``` usando o no collapse (2). 
 
-* Con colapse:
+* Con colapse:  
 ![captura](img/3.png)
+
+
 
 * sin colapse:
 ![captura](img/4.png)
