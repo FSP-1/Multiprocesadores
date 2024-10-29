@@ -268,15 +268,19 @@ if (!ExistArg("-ffmpeg",argc,argv))
  //TODO Get the number of threads (nthreads) 
  //TODO Get memory for pRandData, with size nthreads. Possible False Sharing.
  //TODO: init seed for each  drand48_data using sdrand48_r(i,...), i=0..nthreads-1. See man pages.
+ 
  #ifdef _OPENMP
- int nThreads= omp_get_num_threads();
- pRandData= (drand48_data *)malloc(sizeof(nThreads);
- #pragma omp parallel shared(pRandData) private(nThreads)
- {
-    int tid= omp_get_thread_num();
-    srand48_r(time(NULL)*tid, &pRandData[tid]);
- }
- #endif
+    int nThreads = omp_get_max_threads();  // Número de hebras disponibles
+pRandData= ( struct drand48_data *) GetMem(nThreads, sizeof( struct drand48_data), 
+									   "Main: pRandData");
+
+
+    #pragma omp parallel default(none) shared(pRandData)
+    {
+        int tid = omp_get_thread_num();  // Identificador de la hebra
+        srand48_r(time(NULL) * tid, &pRandData[tid]);  // Semilla única para cada hebra
+    }
+#endif
  //Initialize variables
  SimIter = 0;  //First iteration of the simulation.
  NFishes = NInitFishes;
@@ -363,7 +367,7 @@ if (!ExistArg("-ffmpeg",argc,argv))
  FreeOcean (Ocean, Rows, Cols);
  
  //TODO Free mem for pRandData
- Free(pRandData);
+  free((void *)pRandData);
 
  if (GenData==True)
     {

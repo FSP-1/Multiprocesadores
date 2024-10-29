@@ -12,7 +12,7 @@ Purpose: implement ocean ruotines
 *******************************************************************************/
 #ifndef __OCEAN__
 #define __OCEAN__
-
+#include <stdlib.h> // Necesario para struct drand48_data
 /*---------------------------------------------------------------------------*/
 void InitOcean      (DataAnimal *** Ocean,
                      const int Rows,    const int Cols, 
@@ -27,7 +27,7 @@ void IterateOcean   (DataAnimal *** Ocean,
                      const int Rows, const int Cols,
                      const int SimIter, int * pNFishes, int * pNSharks,
                      const int NiFBreed, const int NiSBreed,
-                     const int SiEnergy, const int SeFEnergy);
+                     const int SiEnergy, const int SeFEnergy, struct drand48_data * pRandData);
 void PrintOcean		(DataAnimal *** Ocean, const int Rows, const int Cols);
 void FreeOcean      (DataAnimal *** Ocean, const int Rows, const int Cols);
 #endif /*__OCEAN__*/

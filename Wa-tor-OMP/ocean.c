@@ -151,7 +151,7 @@ void FreeNeighbours(DataAnimal ***Ocean,
 void IterateFish(DataAnimal ***Ocean, 
                  const int Rows, const int Cols,
                  const int i, const int j,
-                 const int SimIter, int * pNFishes, const int NiFBreed, const drand48_data * pRandData)
+                 const int SimIter, int * pNFishes, const int NiFBreed, struct drand48_data * pRandData)
 {
  int Newi, Newj; 
  int FreeX[4];	//x values of free neighbourg cells.
@@ -177,25 +177,22 @@ void IterateFish(DataAnimal ***Ocean,
 	 
 	 //TODO #ifdef _OPENMP 
 	 //TODO see your thread mum and use the correspondig pRandData
-	 //to get a random number with lrand48_r() instead of lrand48()
+	 //to get a random number with lrand48_r() instead of lrand48() 
+	 long int nRandom=0;
 	 #ifdef _OPENMP
-	 int nRandom=0;
-	 #pragma omp parallel shared(pRandData) private(nRandom)
-	 {
-	    int tid= omp_get_thread_num();
-	    #pragma omp single
-	    lrand48_r(&pRandData[tid],&nRandom);
-	 }
-	 FreeXYIndex=nRandom % NFree;
-	 #endif
-	 //#ifndef _OPENMP 
+         int tid= omp_get_thread_num();
+	 lrand48_r(&pRandData[tid],&nRandom);	
+         FreeXYIndex = nRandom % NFree; 
+            
+     	#endif
+     	
+	#ifndef _OPENMP 
 	 
-	 //TODO #ifndef _OPENMP use lrand48()
-	 #ifndef _OPENMP
-	 FreeXYIndex=lrand48() % NFree;
+		 //TODO #ifndef _OPENMP use lrand48()
+	
+		 FreeXYIndex=lrand48() % NFree;
 	 #endif
-	}
- else
+	}else
     FreeXYIndex=0;
     
  Newi=FreeX[FreeXYIndex];
@@ -288,7 +285,7 @@ void IterateShark(DataAnimal ***Ocean,
                  int i, int j,
                  const int SimIter, int * pNFishes, int * pNSharks, 
                  const int NiSBreed,
-                 const int SiEnergy, const int SeFEnergy, const drand48_data * pRandData)
+                 const int SiEnergy, const int SeFEnergy, struct drand48_data * pRandData)
 {
  int Newi, Newj;//New cell and temp to swap
  unsigned char Eat   = False;// a shark ate.
@@ -342,22 +339,22 @@ void IterateShark(DataAnimal ***Ocean,
 		
 		 //TODO #ifdef _OPENMP 
 		 //TODO see your thread mum and use the correspondig pRandData 	
-		 // to get a random number with lrand48_r() instead of lrand48()
-		 #ifdef _OPENMP
-	 	int nRandom=0;
-	 	#pragma omp parallel shared(pRandData) private(nRandom)
-	 	{
-	    	int tid= omp_get_thread_num();
-	    	#pragma omp single
-	    	lrand48_r(&pRandData[tid],&nRandom);
-	 	}
-	 	FreeXYIndex=nRandom % NFoundFishes;
+		 // to get a random number with lrand48_r() instead of lrand48() 
+	 long int nRandom=0;
+	 #ifdef _OPENMP
+         int tid= omp_get_thread_num();
+	 lrand48_r(&pRandData[tid],&nRandom);
+	 FreeXYIndex = nRandom % NFree; 
+            
+     	#endif
+     	
+	#ifndef _OPENMP 
+	 
+		 //TODO #ifndef _OPENMP use lrand48()
+	
+		 FreeXYIndex=lrand48() % NFree;
 	 #endif
-		 //TODO next is done only if #ifndef _OPENMP 
-		 #ifndef _OPENMP
-		 FishXYIndex=lrand48() % NFoundFishes;
-		 #endif
-		}
+	 }
 	 else
 	    FishXYIndex=0;
      
@@ -409,9 +406,21 @@ void IterateShark(DataAnimal ***Ocean,
 		 //TODO #ifdef _OPENMP    
 		 //TODO see your thread mum and use the correspondig pRandData 
 		 // to get a random number with lrand48_r() instead of lrand48()
-		 
-		 //TODO next is done only if #ifndef _OPENMP 
+		  long int nRandom=0;
+	 #ifdef _OPENMP
+         int tid= omp_get_thread_num();
+	 lrand48_r(&pRandData[tid],&nRandom);
+	 FreeXYIndex = nRandom % NFree; 
+            
+     	#endif
+     	
+	#ifndef _OPENMP 
+	 
+		 //TODO #ifndef _OPENMP use lrand48()
+	
 		 FreeXYIndex=lrand48() % NFree;
+	 #endif
+		
 		}
 	 else
 	    FreeXYIndex=0;
@@ -454,10 +463,13 @@ void IterateOcean(DataAnimal *** Ocean,
                   const int Rows, const int Cols,
                   const int SimIter, int * pNFishes, int * pNSharks,
                   const int NiFBreed, const int NiSBreed,
-                  const int SiEnergy, const int SeFEnergy, const drand48_data * pRandData)
+                  const int SiEnergy, const int SeFEnergy, struct drand48_data * pRandData)
 {
- //TODO: Parallelize with OpenMP using a reduction(+:...)
- /*for (int i=0; i<Rows; i++)
+
+ 
+ 
+ 	#ifndef _OPENMP 
+  for (int i=0; i<Rows; i++)
      for (int j=0; j<Cols; j++)
          {
           if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==FISH)
@@ -468,40 +480,40 @@ void IterateOcean(DataAnimal *** Ocean,
              IterateShark(Ocean,Rows,Cols,i,j,SimIter,
                           pNFishes, pNSharks, NiSBreed,
                           SiEnergy, SeFEnergy);
-         }*/
-  for(int i=0; i<Rows;i+3)
+         }
+         #endif
+          //TODO: Parallelize with OpenMP using a reduction(+:...)
+	 #ifdef _OPENMP
+	  
+  for(int i=0; i<Rows;i=i+3)
      for(int j=0;j<Cols;j++){
      if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==FISH)
-             //TODO Add pRandData parameters at the end
              IterateFish(Ocean,Rows,Cols,i,j,SimIter,pNFishes,NiFBreed, pRandData);
           if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==SHARK)
-             //TODO Add pRandData  parameters at the end
              IterateShark(Ocean,Rows,Cols,i,j,SimIter,
                           pNFishes, pNSharks, NiSBreed,
                           SiEnergy, SeFEnergy,pRandData);
      }
-  for(int i=1; i<Rows;i+3)
+  for(int i=1; i<Rows;i=i+3)
      for(int j=0;j<Cols;j++){
      if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==FISH)
-             //TODO Add pRandData parameters at the end
              IterateFish(Ocean,Rows,Cols,i,j,SimIter,pNFishes,NiFBreed,pRandData);
           if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==SHARK)
-             //TODO Add pRandData  parameters at the end
              IterateShark(Ocean,Rows,Cols,i,j,SimIter,
                           pNFishes, pNSharks, NiSBreed,
                           SiEnergy, SeFEnergy,pRandData);
      }
-  for(int i=2; i<Rows;i+3)
+  for(int i=2; i<Rows;i=i+3)
      for(int j=0;j<Cols;j++){
      if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==FISH)
-             //TODO Add pRandData parameters at the end
-             IterateFish(Ocean,Rows,Cols,i,j,SimIter,pNFishes,NiFBreed);
+             IterateFish(Ocean,Rows,Cols,i,j,SimIter,pNFishes,NiFBreed,pRandData);
           if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==SHARK)
-             //TODO Add pRandData  parameters at the end
              IterateShark(Ocean,Rows,Cols,i,j,SimIter,
                           pNFishes, pNSharks, NiSBreed,
-                          SiEnergy, SeFEnergy);
+                          SiEnergy, SeFEnergy,pRandData);
      }
+    
+    #endif
 }
 
 
