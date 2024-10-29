@@ -149,6 +149,8 @@ $ kill -9 <pid>
 
 1. **¿Tiene el algoritmo paralelo perdidas de memoria (memory leaks)?**
  * Usa ```$ valgrind -s ./Wa-tor -ni xx```,  con xx no muy grande, ya que tarda al coger y soltar muchas veces memoria. Si tienes perdida de memoria es que dos animales se han movido a la misma celda y no está bien el código. Muestra aquí el ERROR SUMMARY.
+ * 
+![captura](img/1.png)
 
 2. **¿Se puede hablar de speed-up teórico, según la ley de Amdahl, si en cada ejecución la semilla de la secuencia pseudo-aleatoria se inicia a un número diferente? ¿Porqué?**
 
