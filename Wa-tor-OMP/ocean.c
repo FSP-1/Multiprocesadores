@@ -176,18 +176,18 @@ void IterateFish(DataAnimal ***Ocean,
 	 //NFree=1 -> I know FreeXYIndex==0
 	    long int nRandom = 0;
             #ifdef _OPENMP
-            int tid = omp_get_thread_num();
-            lrand48_r(&pRandData[tid], &nRandom);
-	    FreeXYIndex = lrand48_r(&pRandData[tid], &nRandom) % NFree; 
-            #pragma omp critical
-            {
-             //   printf("Random number for choosing fish: %ld (Thread %d)\n", nRandom, tid);
-            }
-            
+	    #pragma omp parallel shared(pRandData) private(nRandom)
+            {    
+               int tid = omp_get_thread_num();
+               lrand48_r(&pRandData[tid], &nRandom);
+               #pragma omp critical
+               {
+	         FreeXYIndex = lrand48_r(&pRandData[tid], &nRandom) % NFree; 
+	       }
+	    }
             #endif
-            
+                     
             #ifndef _OPENMP 
-                        printf("Random");
             FreeXYIndex = lrand48() % NFree;
             #endif
 	 //TODO #ifdef _OPENMP 
@@ -341,16 +341,17 @@ void IterateShark(DataAnimal ***Ocean,
     {
      if (NFoundFishes>1)
         {
-		long int nRandom = 0;
+	    long int nRandom = 0;
             #ifdef _OPENMP
+	#pragma omp parallel shared(pRandData) private(nRandom)
+         {
             int tid = omp_get_thread_num();
             lrand48_r(&pRandData[tid], &nRandom);
-	    FishXYIndex = lrand48_r(&pRandData[tid], &nRandom) % NFoundFishes; 
-            #pragma omp critical
+	    #pragma omp critical
             {
-             //   printf("Random number for choosing fish: %ld (Thread %d)\n", nRandom, tid);
-            }
-            
+	        FishXYIndex = lrand48_r(&pRandData[tid], &nRandom) % NFoundFishes; 
+	    }
+	 }
             #endif
             
             #ifndef _OPENMP 
@@ -405,20 +406,20 @@ void IterateShark(DataAnimal ***Ocean,
         
 	 if (NFree>1)
 	    {
-		    long int nRandom = 0;
+	    long int nRandom = 0;
             #ifdef _OPENMP
-            int tid = omp_get_thread_num();
-            lrand48_r(&pRandData[tid], &nRandom);
-	    FreeXYIndex = lrand48_r(&pRandData[tid], &nRandom) % NFree; 
-            #pragma omp critical
-            {
-             //   printf("Random number for choosing fish: %ld (Thread %d)\n", nRandom, tid);
-            }
-            
+	    #pragma omp parallel shared(pRandData) private(nRandom)
+            {    
+               int tid = omp_get_thread_num();
+               lrand48_r(&pRandData[tid], &nRandom);
+               #pragma omp critical
+               {
+	         FreeXYIndex = lrand48_r(&pRandData[tid], &nRandom) % NFree; 
+	       }
+	    }
             #endif
             
             #ifndef _OPENMP 
-                        printf("Random");
             FreeXYIndex = lrand48() % NFree;
             #endif
 	 //TODO #ifdef _OPENMP 
@@ -472,7 +473,9 @@ void IterateOcean(DataAnimal *** Ocean,
                   const int SiEnergy, const int SeFEnergy,   struct drand48_data *pRandData)
 {
  //TODO: Parallelize with OpenMP using a reduction(+:...)
- /*for (int i=0; i<Rows; i++)
+#ifndef _OPENMP 
+ for (int i=0; i<Rows; i++)
+	 {
      for (int j=0; j<Cols; j++)
          {
           if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==FISH)
@@ -484,36 +487,88 @@ void IterateOcean(DataAnimal *** Ocean,
                           pNFishes, pNSharks, NiSBreed,
                           SiEnergy, SeFEnergy,pRandData);
          }
-}
-*/
- for(int i=0; i<Rows;i=i+3)
-     for(int j=0;j<Cols;j++){
-     if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==FISH)
-             IterateFish(Ocean,Rows,Cols,i,j,SimIter,pNFishes,NiFBreed, pRandData);
-          if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==SHARK)
-             IterateShark(Ocean,Rows,Cols,i,j,SimIter,
-                          pNFishes, pNSharks, NiSBreed,
-                          SiEnergy, SeFEnergy,pRandData);
-     }
-  for(int i=1; i<Rows;i=i+3)
-     for(int j=0;j<Cols;j++){
-     if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==FISH)
-             IterateFish(Ocean,Rows,Cols,i,j,SimIter,pNFishes,NiFBreed,pRandData);
-          if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==SHARK)
-             IterateShark(Ocean,Rows,Cols,i,j,SimIter,
-                          pNFishes, pNSharks, NiSBreed,
-                          SiEnergy, SeFEnergy,pRandData);
-     }
-  for(int i=2; i<Rows;i=i+3)
-     for(int j=0;j<Cols;j++){
-     if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==FISH)
-             IterateFish(Ocean,Rows,Cols,i,j,SimIter,pNFishes,NiFBreed,pRandData);
-          if (Ocean[i][j]!=NULL && Ocean[i][j]->Animal==SHARK)
-             IterateShark(Ocean,Rows,Cols,i,j,SimIter,
-                          pNFishes, pNSharks, NiSBreed,
-                          SiEnergy, SeFEnergy,pRandData);
-     }
     }
+}
+#endif
+
+#ifdef _OPENMP
+    int totalNFishes = 0;
+    int totalNSharks = 0;
+
+    #pragma omp parallel reduction(+:totalNFishes, totalNSharks) shared(Ocean, Rows, Cols, SimIter, NiFBreed, NiSBreed, SiEnergy, SeFEnergy, pRandData)
+    {
+        // Local variables for this thread's count
+        int threadNFishes = 0;
+        int threadNSharks = 0;
+
+        // Three separate loops for rows
+        #pragma omp for
+        for (int i = 0; i < Rows; i += 3) // Group of rows 1
+        {
+            for (int j = 0; j < Cols; j++)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+
+        #pragma omp for
+        for (int i = 1; i < Rows; i += 3) // Group of rows 2
+        {
+            for (int j = 0; j < Cols; j++)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+
+        #pragma omp for
+        for (int i = 2; i < Rows; i += 3) // Group of rows 3
+        {
+            for (int j = 0; j < Cols; j++)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+
+        // Accumulate results to local variables
+        totalNFishes += threadNFishes;
+        totalNSharks += threadNSharks;
+    }
+
+    // After the parallel region, assign the total counts to the output parameters
+    *pNFishes = totalNFishes;
+    *pNSharks = totalNSharks;
+    #endif
+}
 /*---------------------------------------------------------------------------*/
 void PrintOcean(DataAnimal *** Ocean, const int Rows, const int Cols)
 {
