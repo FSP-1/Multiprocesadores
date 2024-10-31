@@ -322,7 +322,16 @@ if (!ExistArg("-ffmpeg",argc,argv))
      FOutDt=OpenFile(FileNameDt,"w");
      fprintf(FOutDt,"%d\t%d\t%d\n", SimIter,NFishes,NSharks);
     }
+ #ifndef _OPENMP // T.CsPar
+    struct timeval tv1, tv2;
+    struct timezone tz;
+    gettimeofday(&tv1, &tz);
+    #endif
 
+ # ifdef _OPENMP //CsPar: Codigo secuencial a paralelizar.
+ double wt1,wt2;
+ wt1=omp_get_wtime();
+# endif
  while (SimIter < MaxNIter && NFishes >0 && NSharks > 0)
        {
         //TODO Add pRandData parameter at the end
@@ -370,7 +379,17 @@ if (!ExistArg("-ffmpeg",argc,argv))
 			//usleep(200000);
            }
       }
-      
+# ifdef _OPENMP
+ wt2=omp_get_wtime();
+ printf( "wall clock time (omp_get_wtime) = %12.4g sec\n", wt2-wt1 );
+# endif
+	
+#ifndef _OPENMP // T.CsPar
+  gettimeofday(&tv2, &tz);
+printf("T.CsPar (IterateOcean) = %g sec.\n",
+ (tv2.tv_sec - tv1.tv_sec) + (tv2.tv_usec - tv1.tv_usec) * 1e-6);
+ #endif
+
  //Free ocean
  FreeOcean (Ocean, Rows, Cols);
  
