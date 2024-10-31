@@ -492,8 +492,8 @@ void IterateOcean(DataAnimal *** Ocean,
 #endif
 
 #ifdef _OPENMP
-    int totalNFishes = 0;
-    int totalNSharks = 0;
+   int totalNFishes = *pNFishes; 
+    int totalNSharks = *pNSharks;
 
     #pragma omp parallel reduction(+:totalNFishes, totalNSharks) shared(Ocean, Rows, Cols, SimIter, NiFBreed, NiSBreed, SiEnergy, SeFEnergy, pRandData)
     {
@@ -503,9 +503,9 @@ void IterateOcean(DataAnimal *** Ocean,
 
         // Three separate loops for rows
         #pragma omp for schedule(dynamic)
-	for (int i = 0; i < Rows; i += 3) // Group of rows 1
+	for (int i = 0; i < Rows; i += 3) // Group of colws 0
         {
-            for (int j = 0; j < Cols; j++)
+            for (int j = 0; j < Cols; j += 3)
             {
                 if (Ocean[i][j] != NULL)
                 {
@@ -520,11 +520,139 @@ void IterateOcean(DataAnimal *** Ocean,
                 }
             }
         }
+	    #pragma omp for schedule(dynamic)
+	for (int i = 0; i < Rows; i += 3) // Group of cols 1
+        {
+            for (int j = 1; j < Cols; j += 3)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+	#pragma omp for schedule(dynamic)
+	for (int i = 0; i < Rows; i += 3) // Group of cols 2
+        {
+            for (int j = 2; j < Cols; j += 3)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+	    
 
         #pragma omp for schedule(dynamic)
-        for (int i = 1; i < Rows; i += 3) // Group of rows 2
+        for (int i = 1; i < Rows; i += 3) // Group of cols 3
         {
-            for (int j = 0; j < Cols; j++)
+            for (int j = 0; j < Cols;  j += 3)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        } 
+	    
+       #pragma omp for schedule(dynamic)
+        for (int i = 1; i < Rows; i += 3) // Group of cols 4
+        {
+            for (int j = 1; j < Cols;  j += 3)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+	        #pragma omp for schedule(dynamic)
+        for (int i = 1; i < Rows; i += 3) // Group of cols 5
+        {
+            for (int j = 2; j < Cols;  j += 3)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+         #pragma omp for schedule(dynamic)
+        for (int i = 2; i < Rows; i += 3)  // Group of cols 6
+        {
+            for (int j = 0; j < Cols;  j += 3)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+	    #pragma omp for schedule(dynamic)
+        for (int i = 2; i < Rows; i += 3)  // Group of cols 7
+        {
+            for (int j = 1; j < Cols;  j += 3)
+            {
+                if (Ocean[i][j] != NULL)
+                {
+                    if (Ocean[i][j]->Animal == FISH)
+                    {
+                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
+                    }
+                    else if (Ocean[i][j]->Animal == SHARK)
+                    {
+                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
+                    }
+                }
+            }
+        }
+	    	    #pragma omp for schedule(dynamic)
+        for (int i = 2; i < Rows; i += 3)  // Group of cols 8
+        {
+            for (int j = 2; j < Cols;  j += 3)
             {
                 if (Ocean[i][j] != NULL)
                 {
@@ -540,24 +668,6 @@ void IterateOcean(DataAnimal *** Ocean,
             }
         }
 
-         #pragma omp for schedule(dynamic)
-        for (int i = 2; i < Rows; i += 3) // Group of rows 3
-        {
-            for (int j = 0; j < Cols; j++)
-            {
-                if (Ocean[i][j] != NULL)
-                {
-                    if (Ocean[i][j]->Animal == FISH)
-                    {
-                        IterateFish(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, NiFBreed, pRandData);
-                    }
-                    else if (Ocean[i][j]->Animal == SHARK)
-                    {
-                        IterateShark(Ocean, Rows, Cols, i, j, SimIter, &threadNFishes, &threadNSharks, NiSBreed, SiEnergy, SeFEnergy, pRandData);
-                    }
-                }
-            }
-        }
 
         // Accumulate results to local variables
         totalNFishes += threadNFishes;
