@@ -156,9 +156,34 @@ $ kill -9 <pid>
 
 * Nota: Termina el algoritmo con el mismo número de peces y tiburones para secuencial, 1 ,2 y 4 hebras? Es decir, ¿se hace el mismo trabajo en las distintas versiones de los algoritmos?
 
+* Para analizar si es posible hablar de speed-up teórico según la Ley de Amdahl en cada ejecución, debemos considerar que la Ley de Amdahl asume que el trabajo realizado en las distintas versiones del algoritmo es exactamente el mismo. En este caso, dado que cada ejecución comienza con una semilla pseudo-aleatoria diferente, los resultados en términos de peces y tiburones varían ligeramente. Esto implica que los distintos hilos no están trabajando sobre el mismo conjunto de datos exacto en cada ejecución, lo que afecta la reproducibilidad del trabajo y dificulta la comparación directa del tiempo de ejecución entre versiones.
+
+* La Ley de Amdahl se aplica mejor cuando el trabajo es idéntico entre las versiones secuenciales y paralelas, permitiéndonos dividir el trabajo en componentes secuenciales y paralelos de manera clara y reproducible. Con una semilla aleatoria distinta en cada ejecución, las variaciones en los datos de entrada afectarán los resultados, lo que significa que no estamos realizando exactamente el mismo trabajo en cada ejecución, lo que reduce la validez de aplicar un speed-up teórico según Amdahl.
+
+*  las diferencias en los resultados (número de peces y tiburones) observadas entre versiones indican que:
+División de tareas en múltiples hilos también puede introducir ligeras variaciones debido a efectos de paralelismo y concurrencia (por ejemplo, orden de ejecución de ciertas tareas y la sincronización de datos entre hilos).
+Estas variaciones implican que el trabajo en términos del número de iteraciones y el cálculo de las poblaciones de peces y tiburones no es exactamente igual entre las versiones. Esto dificulta la aplicación de la Ley de Amdahl de manera estricta, dado que una suposición clave de la ley el mismo trabajo para cada versión no se cumple completamente.
+
+![captura](img/2.jpg)
+
 3. **Y si la semilla del lrand48() se inicializa siempre con srand48(0) y las semillas de lrand48_r() se inicializan siempre a la su posición *i* en el vector pRandData con srand48\_r(i,&pRandData[i]) ¿Se puede hablar de speed-up? ¿Porqué?**
 
 * Nota: la misma que en el punto 2.
+  
+* Si inicializas la semilla de lrand48() con srand48(0) para la ejecución secuencial y usas srand48_r(i, &pRandData[i]) para inicializar las semillas en las posiciones i de un vector pRandData en una implementación paralela, las condiciones cambian significativamente. Vamos a analizar si en este escenario se puede hablar de speed-up y por qué.
+
+### Comparación de las Semillas
+#### Inicialización Secuencial:
+
+* Al usar srand48(0) para la versión secuencial, generas una secuencia de números pseudo-aleatorios que es completamente determinista y reproducible en cada ejecución. Esto significa que, siempre que el algoritmo se ejecute con esta semilla, el resultado (número de peces, tiburones, etc.) será el mismo.
+
+#### Inicialización Paralela:
+
+* Usar srand48_r(i, &pRandData[i]) para inicializar cada hilo garantiza que cada hilo comienza a generar números pseudo-aleatorios a partir de un estado inicial diferente (dependiente de i). Esto también significa que, aunque los hilos generen números aleatorios de manera independiente, el inicio en diferentes posiciones asegura que los hilos no generen colisiones en sus números aleatorios a lo largo del tiempo.
+
+### ¿Se Puede Hablar de Speed-Up?
+* Sí, en este caso se puede hablar de speed-up por las siguientes razones:
+Al fijar las semillas de modo que las condiciones de entrada y la lógica del algoritmo sean las mismas entre las versiones secuenciales y paralelas, se puede hablar de speed-up. Esto se debe a que, en este escenario, estamos realizando el mismo trabajo y utilizando un enfoque estructurado para la generación de números aleatorios que permite una comparación válida de la eficiencia de ejecución entre las diferentes versiones del algoritmo. Esto establece un contexto claro en el que podemos medir el rendimiento y la mejora obtenida al utilizar múltiples hilos.
 
 4. **Si has contestado que si se puede hablar de speed-up, rellena la siguiente tabla sin salidas gráficas ni de datos y usando siempre las mismas semillas para los números aleatorios**:
 
