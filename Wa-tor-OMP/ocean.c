@@ -502,8 +502,8 @@ void IterateOcean(DataAnimal *** Ocean,
         int threadNSharks = 0;
 
         // Three separate loops for rows
-        #pragma omp for
-        for (int i = 0; i < Rows; i += 3) // Group of rows 1
+        #pragma omp for schedule(dynamic)
+	for (int i = 0; i < Rows; i += 3) // Group of rows 1
         {
             for (int j = 0; j < Cols; j++)
             {
@@ -521,7 +521,7 @@ void IterateOcean(DataAnimal *** Ocean,
             }
         }
 
-        #pragma omp for
+        #pragma omp for schedule(dynamic)
         for (int i = 1; i < Rows; i += 3) // Group of rows 2
         {
             for (int j = 0; j < Cols; j++)
@@ -540,7 +540,7 @@ void IterateOcean(DataAnimal *** Ocean,
             }
         }
 
-        #pragma omp for
+         #pragma omp for schedule(dynamic)
         for (int i = 2; i < Rows; i += 3) // Group of rows 3
         {
             for (int j = 0; j < Cols; j++)
