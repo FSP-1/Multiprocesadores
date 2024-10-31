@@ -488,7 +488,7 @@ void IterateOcean(DataAnimal *** Ocean,
                           SiEnergy, SeFEnergy,pRandData);
          }
     }
-}
+
 #endif
 
 #ifdef _OPENMP
