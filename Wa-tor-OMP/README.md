@@ -150,7 +150,7 @@ $ kill -9 <pid>
 1. **¿Tiene el algoritmo paralelo perdidas de memoria (memory leaks)?**
  * Usa ```$ valgrind -s ./Wa-tor -ni xx```,  con xx no muy grande, ya que tarda al coger y soltar muchas veces memoria. Si tienes perdida de memoria es que dos animales se han movido a la misma celda y no está bien el código. Muestra aquí el ERROR SUMMARY.
  * 
-![captura](img/1.png)
+![captura](img/1.jpg)
 
 2. **¿Se puede hablar de speed-up teórico, según la ley de Amdahl, si en cada ejecución la semilla de la secuencia pseudo-aleatoria se inicia a un número diferente? ¿Porqué?**
 
@@ -189,35 +189,49 @@ Al fijar las semillas de modo que las condiciones de entrada y la lógica del al
 
 | Ejecución   |  102x102       | 201x201         |
 | ----------- | -------------- | --------------- |
-|T.Sec        |                |                 |
-|T.CsPar      |                |                 |
-|SpA(2)       |                |                 |
-|SpA(4)       |                |                 |
+|T.Sec        |  2.222         | 9.715           |
+|T.CsPar      | 2.2361         | 7.136           |
+|SpA(2)       |  1.962         | 1.86            |
+|SpA(4)       | 2.960          | 2.226           |
 
 4. **Si has contestado que si se puede hablar de speed-up, ¿Donde has medido el tiempo del código secuencial que se va a paralizar (T.CsPar) para calcular SpA(p)?**
 
+* Lo he puesto el tiempo a iniciar antes del while (SimIter < MaxNIter && NFishes >0 && NSharks > 0) y luego al final de este el tiempo fin
 
 5. **A partir de la experiencia con el Mandelbrot, ¿qué scheduler sin especificar el chunk podría ser el mejor para Wa-tor? ¿Porqué?**
 
+* El uso de un scheduler dynamic es probablemente la mejor opción para el algoritmo de Wa-tor, dado que maximiza el uso de recursos y minimiza el tiempo de inactividad al permitir que los hilos se adapten a la carga de trabajo variable de manera eficiente.
+  
 6. Rellena la siguiente tabla usando el scheduler elegido:
 
 | Ejecución   |  102x102       | 201x201         |
 | ----------- | -------------- | --------------- |
-|T.Sec        |                |                 |
-|T(2)         |                |                 |
-|T(4)   ,     |                |                 |
-
+|T(2)         | 2.361          |  8.994          |
+|T(4)         |  1.962         |  7.136          |
+|Sp(2)        |	0.9411         |  1.0801         |
+|Sp(4)        |	1.132          |  1.361          |
 
 8. **¿Se podrían comparar tiempos con distinto número de hebras?** 
 
+* Sí, se pueden comparar los tiempos de ejecución con un distinto número de hebras.
+
 9. **¿Son razonables los tiempos alcanzados? ¿Porqué?**
+
+* Los tiempos son razonables si reflejan una buena utilización de los recursos y siguen una tendencia esperada con el aumento del tamaño del problema y el número de hilos. Sin embargo, siempre es recomendable hacer más pruebas y ajustes para optimizar aún más el rendimiento.
 
 10. **Si se hubieran hecho 9 dobles bucles donde además de las i, las j también estarían separadas por 3 celdas dentro del mismo doble bucle i, teoricamente: ¿Habría más o menos fallos de cache? ¿Sería más eficiente usar collapse(2)? Razona las respuestas.** 
 
+* Más fallos de caché: Debido a la separación de las celdas, se afecta negativamente la localidad de referencia.
+  
+* Uso de collapse(2): Teóricamente, sería más eficiente, ya que permite una mejor distribución del trabajo y puede optimizar la utilización de la memoria, aunque la efectividad real dependerá del compilador y del hardware específico en uso.
+  
 11. **¿Se te ocurre un método más eficiente de paralelizar Wa-tor?** 
+
+* No, pero creo que se podria poner iterFish y iterShark en una función.
 
 12. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
 
+*Si
 
 # Actividad Wa-tor: reglas.
 
