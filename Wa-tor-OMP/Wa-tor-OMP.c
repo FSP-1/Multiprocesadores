@@ -272,18 +272,10 @@ if (!ExistArg("-ffmpeg",argc,argv))
     {
         int tid = omp_get_thread_num();  // Identificador del hilo
         srand48_r(time(NULL) + tid, &pRandData[tid]);  // Semilla única para cada hilo
-        
-        // Generar número aleatorio
-        double random_num;
-        drand48_r(&pRandData[tid], &random_num);  // Generar número aleatorio
-
-        // Imprimir número aleatorio de forma crítica
-        #pragma omp critical
-        {
-            printf("Hilo %d: numero random = %f\n", tid, random_num);
-        }
+      
     }
-    #endif
+    
+#endif
  
  //TODO Get the number of threads (nthreads) 
  //TODO Get memory for pRandData, with size nthreads. Possible False Sharing.
