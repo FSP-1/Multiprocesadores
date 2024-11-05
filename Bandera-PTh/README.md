@@ -8,13 +8,13 @@
  * Nombre de grupo de actividades: GTA2-2 y GTA3-2
 
 ## Arquitectura: 
-  * Microprocesador:
-  * Número de núcleos:
-  * Cantidad de subprocesos por nucleo:
-  * Tiene hyperthreading (SMT) activado en BIOS:
-  * HDD/SDD: 
-  * RAM:
-  * Se usa máquina virtual:
+  * Microprocesador: Intel core I5-10500 CPU @ 3.10GHz
+  * Número de núcleos: 6
+  * Cantidad de subprocesos por nucleo: 12
+  * Tiene hyperthreading (SMT) activado en BIOS:Si
+  * HDD/SDD: 500G
+  * RAM:16G
+  * Se usa máquina virtual: NO
     - Número de cores:
     - RAM: 
     - Capacidad HDD: 
@@ -85,7 +85,7 @@ $ ./Bandera-PTh -h
 * Al igual que en Bandera-OMP, hay que elegir un número de filas y columnas (Rows=Col) múltiplo de 1024 (n*1204, n>1) que haga que el programa secuencial (Bandera.c) tarde varios segundos y que no consuma toda la RAM. Se puede usar el mismo valor que se usó en Bandera-OMP, si no se ha cambiado la arquitectura. 
 
 1. **¿Que valor de Rows=Col has elegido? ¿Cuanta memoria (Mem.) ocupa la imagen?** 
- * El valor escogido fue de 4096. La imagen creada con ese valor es de 5729 bytes.
+ * El valor escogido fue de 10240. La imagen creada con ese valor es de 22525 bytes.
 
 2. **Usa la versión secuencial *Bandera.c* para rellenar la siguiente tabla.**
  * Ejemplo de ejecución sin salida gráfica:
@@ -95,10 +95,10 @@ $ time Bandera -r <Rows> -c <Cols>
 
 | Ejecución   | -r 1024 -c 1024 | -r Rows -c Cols |
 | ----------- | --------------- | --------------- |
-|T.Sec        |  0.009          |  0.051          |
-|T.CsPar      |  0.002279       |  0.034085       |
-|SpA(2)       |  1.145          |  1.502          |
-|SpA(4)       |  1.234          |  2.005          |
+|T.Sec        |  0.009          |  0.303          |
+|T.CsPar      |  0.002279       |  0.205566       |
+|SpA(2)       |  1.145          |  1.513          |
+|SpA(4)       |  1.234          |  2.036          |
 
 donde
  * T.Sec: El wall-clock time (tiempo total) del programa secuencial. Parte real del $time Bandera ... 
@@ -120,11 +120,11 @@ $ time Bandera-PTh -r <Rows> -c <Cols> -nt <p>
 
 | Ejecución   |-r 1024 -r 1024 |-r Rows -c Cols  | 
 | ----------- | -------------- | --------------- |
-|T(1)         | 0.074          |                 |
-|T(2)         | 0.075          |                 |
-|T(4)         | 0.075          |                 |
-|Sp(2)        | 0.12           |                 |
-|Sp(4)        | 0.12           |                 |
+|T(1)         | 0.074          |  0.305          |
+|T(2)         | 0.075          |  0.201          |
+|T(4)         | 0.075          |  0.151          |
+|Sp(2)        | 0.12           |  1.507          |
+|Sp(4)        | 0.12           |  2.007          |
 
 Donde 
 * T(p): El tiempo total (parte real de la salida $time Bandera-PTh ...) del algoritmo paralelo con p hebras.
@@ -138,11 +138,13 @@ Donde
     - (ciclica,*), 
     - (*,ciclica), 
     - (ciclica,ciclica).
+    
+* Se ha usado la distribución (*, bloque) al hacer que los hilos procesen x cantidad de filas.
 
 5. **¿Son el tiempo secuencial y el paralelo con una hebra diferentes? ¿Porqué?**
-
+* Si, eso es debido a que en el paralelo con una hebra hay un retardo al crear y manejar el hilo.
 6. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
-
+Si
 - - - 
 
 ### Como ver este .md 

@@ -9,7 +9,7 @@
 #include "stdbool.h"
 
 
-#define PRINT 1
+#define PRINT 0
 
 /*---------------------------------------------------------------------------*/
 //TODO: the structure can be modified.
@@ -36,7 +36,8 @@ void * Th_Bandera_Function (void * pTh_Args)
  Type_Th_Bandera_Args * pMyData;
  
  pMyData=(Type_Th_Bandera_Args *) pTh_Args;
- 
+
+
  //TODO: Print the assigned rows and columns
  #if (PRINT==1)
  printf("I am thread %d doing %d rows (%d,%d) and %d columns (%d,%d).\n", 
@@ -61,6 +62,7 @@ void * Th_Bandera_Function (void * pTh_Args)
  int Row= pMyData->GlobalRows;
  for(int i=iniR; i<finR;i++)
     for(int j=iniC; j<finC;j++){
+    
        pMyData->ppRed[i][j]=(char)255;
        if (i>Row/4 && i<Row*3/4)
           pMyData->ppGreen[i][j]=(char)255;
@@ -98,7 +100,7 @@ int main(int argc, char **argv)
  int rc;		//Return value  of pthread_join 
  void *status;	//status returned in pthread_join.
  
-printf("1");
+
  if (ExistArg("-h",argc,argv))
     ParametersError();  
 
@@ -160,7 +162,7 @@ printf("1");
          Rows, Cols, FileName);
  #endif
  
- printf("Bandera-PTh main: NThreads=%d.\n",NThreads);
+
 
  //Get mem for threads
  pThreads = (pthread_t *) GetMem(NThreads, sizeof(pthread_t), 
@@ -176,17 +178,18 @@ printf("1");
  ppBlue  = (char **) GetMem2D (Rows,Cols,sizeof(char),"Main:ppBlue");
  
  
+ 
  int auxC=0;
  //We create the Threads
   for (int t=0; t<NThreads; t++) 
       {
+     
        pTh_Args[t].ThreadId=t;
        //TODO: Set the other values of pTh_Args. You can change them.
        //Balance Static.
        //All threads must do the almost same amount of work
        //Every pixel must be done.
        //Each pixel is visited just once.
-       printf("1");
        pTh_Args[t].Rows= Rows/NThreads;
        pTh_Args[t].Cols= Cols/NThreads;
        pTh_Args[t].Starti= 0;
@@ -203,7 +206,6 @@ printf("1");
        rc = pthread_create(&pThreads[t],NULL, 
                            Th_Bandera_Function, (void *)&pTh_Args[t]);
       }
-  printf("1");
  //Wait all threads end.
  for (int t=0; t<NThreads; t++) 
      {
@@ -214,10 +216,12 @@ printf("1");
           printf("ERROR; return code from pthread_join() is %d\n", rc);
           exit(-1);
          }
+        
       #if (PRINT==1)
       printf("Main: thread %d join with status %d\n",t,*(int *)status);
       #endif
      }
+     
 
 
  if (GenImage)
