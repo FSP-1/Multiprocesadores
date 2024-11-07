@@ -1,24 +1,26 @@
 # Ejercicio: Mandel PTh.
 
-## A rellenar por el alumno/grupo
- * Nombre y apellidos alumno 1   : 
- * Nombre y apellidos alumno 2   : 
- * Nombre y apellidos alumno 3   : 
- * Mayoría en GTA1, GTA2 o GTA3  : 
- * Nombre de grupo de actividades: 
+# A rellenar por el alumno/grupo
+## Nombre y apellidos alumno 1   : < Franco Sergio Pereyra >
+## Nombre y apellidos alumno 2   : < Rosa Maria Lopez Garcia>
+## Nombre y apellidos alumno 3   : < David Matarin Guill>
+## Mayoría en GTA1, GTA2 o GTA3  : < GT2 >
+## Nombre de grupo de actividades: < GT2-2 y GT3-2 >
 
+
+# Descripción de la arquitectura utilizada:
 ## Arquitectura: 
- * Microprocesador:
- * Número de núcleos:
- * Cantidad de subprocesos por núcleo:
- * Tiene hyperthreading (SMT) activado en BIOS:
- * HDD/SDD: 
- * RAM:
- * Se usa máquina virtual:
+  * Microprocesador: Intel core I5-10500 CPU @ 3.10GHz
+  * Número de núcleos: 6
+  * Cantidad de subprocesos por nucleo: 12
+  * Tiene hyperthreading (SMT) activado en BIOS:Si
+  * HDD/SDD: 500G
+  * RAM:16G
+  * Se usa máquina virtual: NO
     - Número de cores:
     - RAM: 
-    - Capacidad HDD: 
-
+    - Capacidad HDD:
+      
 ## Instrucciones:
 
 * El Mandel.c muestra como generar una imagen en color del fractal de Mandelbrot.
@@ -174,23 +176,29 @@ De todas formas, si uan hebra hace una fila entera, el mejor valor del chunk ( -
 
 | Ejecución   | -mi 1e5         |
 | ----------- | --------------- | 
-|T.Sec        |                 | 
-|Chuck p=2    |                 |
-|Chunk p=4    |                 |
-|T(2)         |                 | 
-|T(4)         |                 | 
-|Sp(2)        |                 | 
-|Sp(4)        |                 | 
+|T.Sec        |   51.180        | 
+|Chuck p=2    |   126           |
+|Chunk p=4    |   5             |
+|T(2)         |  25.022         | 
+|T(4)         |  12.523         | 
+|Sp(2)        |  2.045          | 
+|Sp(4)        |  4.036          | 
 
 
 5. **Compara el mejor Sp(4) para -mi 1e5 de Mandel-OMP con schedule dynamic y el mejor chunk encontrado con Mandel-PTh del punto 4.**
  + **¿Cual es mejor?**
+
+* El del Mandel-Pth
+  
  + **¿Son los chunks OMP y PTh distintos (indica sus valores)?**
+
+*En omp fue 262143(En este se tomo en cuenta el cols al hacer el chunk) y en PTh 5
 
 6. **Indica al número de filas que realiza cada hebra para una ejecución con p=4 de la tabla en el punto 4.**
     - **¿Difieren los números de filas realizadas por cada hebra de una ejecución a otra? ¿Porqué?**
     - **¿Es el número de filas realizado por las hebras de una ejecución similar? ¿Porqué?**
-
+      
+![captura](img/1.jpg)
 
 7. **En vez de solo por filas, se podría haber paralelizado por pixeles. Teóricamente, ¿sería más efectivo? ¿Cuando y porqué?** 
 * Para ello, el pixel donde empezar se numera de 0 a (Rows * Cols)-1. Para pasar de número de pixel a posición [i][[j] se puede usar la rutina VectorToMatrixInd() que se encuentra en el fichero Indexes-Vector-Matrix.c, y este en Rutines-PTh.tgz, que está en el aula virtual de la asignatura. Solo habría que usar VectorToMatrixInd() para el primer pixel del chunk, ya que los demás se pueden saber teniendo en cuenta Rows, Cols y el ChunkSize.
