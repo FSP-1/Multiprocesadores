@@ -1,0 +1,34 @@
+Hay que poner en la entrega el grupo al que se pertenece.
+
+La información de inicio de conexión de los sistemas no hace falta enviarla.
+
+Tampoco lo que aparece cuando se instalan paquetes, solo el comando.
+
+Deberías añadir el nombre del pcs que aparecen en el shell a la hora de ejecutar un comando, para saber donde se ejecuta.
+
+Si abres el documento con
+
+> grip -b README.md
+
+No se presenta bien. Mira https://www.markdownguide.org/cheat-sheet/
+
+Indicas lo que has hecho pero no lo muestras.
+
+No muestras lo que contiene el fichero host que usas en la opción hostname
+
+No muestras las IPs de los hosts,....
+
+Debes incluir los pasos realizados con las salidas en el terminal (sin incluir información no relevante).
+
+Hay que poner el usuario@máquina que hace el comando, tal y como aparece en el shell.
+
+Si los usuarios SSH son iguales, entonces en el ssh no hay que indicar usuario@ip , se puede usar solo la ip.
+
+No ejecutas en ambas máquinas. Debes ejecutar el comando desde dolo una máquina con la opción -hostfile ~/hosts:
+Si el fichero ~/hosts (~ = tu directorio HOME) tiene los dos PCs con 2 slots cada uno, te falta que se ejecute en las dos máquinas, lanzando el comando desde solo una:
+$ mpirun -np 4 -hostfile hosts ./mpi_hello  
+Deben aparecer 4 ejecuciones, dos en cada máquina.
+
+¿Porqué envías un pdf si pido un .md?
+
+
