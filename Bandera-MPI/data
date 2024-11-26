@@ -1,0 +1,126 @@
+./Run.sh 
+Cambiar 2048 por valor para que el secuencial dure varios segundos
+gcc   -Wall  -c -o argshand.o argshand.c
+gcc   -Wall  -c -o getmem.o getmem.c
+gcc   -Wall  -c -o utils.o utils.c
+gcc   -Wall  -I.  argshand.o getmem.o utils.o\
+ -L/usr/lib64 -pthread -lm -o Bandera  Bandera.c
+-----------------------------------------
+Secuencial
+-----------------------------------------
+T.CsPar (gettimeofday) = 0.002247 sec.
+
+real	0m0,004s
+user	0m0,002s
+sys	0m0,002s
+T.CsPar (gettimeofday) = 0.008834 sec.
+
+real	0m0,014s
+user	0m0,009s
+sys	0m0,005s
+mpicc   -Wall  -I.  argshand.o getmem.o utils.o\
+ -L/usr/lib64 -pthread -lm -o Bandera-MPI Bandera-MPI.c
+-----------------------------------------
+MPI -r 768 -c 1024 
+-----------------------------------------
+Bandera-MPI Task 0: NTasks=1.
+Rows=1024, Cols=1024, Output=L���0.
+--------------------------------------------------------
+DivideMBetweenNForMe: Me=0,N=1,M=1048576.
+Task 0 out of 1, responsible of 1048576 pixels: [0,1048575].
+Bandera_Function: Task 0, pixels 0 to 1048575, Rows=1024, Cols=1024.
+T.CsPar (gettimeofday) = 0.003594 sec.
+
+real	0m0,310s
+user	0m0,034s
+sys	0m0,037s
+Bandera-MPI Task 0: NTasks=2.
+Rows=1024, Cols=1024, Output=L���0.
+--------------------------------------------------------
+DivideMBetweenNForMe: Me=0,N=2,M=1048576.
+Task 0 out of 2, responsible of 524288 pixels: [0,524287].
+Bandera_Function: Task 0, pixels 0 to 524287, Rows=1024, Cols=1024.
+DivideMBetweenNForMe: Me=1,N=2,M=1048576.
+Task 1 out of 2, responsible of 524288 pixels: [524288,1048575].
+Bandera_Function: Task 1, pixels 524288 to 1048575, Rows=1024, Cols=1024.
+Task 0: Receiving 524288 pivels starting in 524288 from 1
+T.CsPar (gettimeofday) = 0.002142 sec.
+
+real	0m0,307s
+user	0m0,040s
+sys	0m0,049s
+Bandera-MPI Task 0: NTasks=4.
+Rows=1024, Cols=1024, Output=(null).
+--------------------------------------------------------
+DivideMBetweenNForMe: Me=0,N=4,M=1048576.
+Task 0 out of 4, responsible of 262144 pixels: [0,262143].
+Bandera_Function: Task 0, pixels 0 to 262143, Rows=1024, Cols=1024.
+DivideMBetweenNForMe: Me=3,N=4,M=1048576.
+Task 3 out of 4, responsible of 262144 pixels: [786432,1048575].
+DivideMBetweenNForMe: Me=1,N=4,M=1048576.
+Task 1 out of 4, responsible of 262144 pixels: [262144,524287].
+Bandera_Function: Task 1, pixels 262144 to 524287, Rows=1024, Cols=1024.
+DivideMBetweenNForMe: Me=2,N=4,M=1048576.
+Task 2 out of 4, responsible of 262144 pixels: [524288,786431].
+Bandera_Function: Task 2, pixels 524288 to 786431, Rows=1024, Cols=1024.
+Bandera_Function: Task 3, pixels 786432 to 1048575, Rows=1024, Cols=1024.
+Task 0: Receiving 262144 pivels starting in 524288 from 2
+Task 0: Receiving 262144 pivels starting in 786432 from 3
+Task 0: Receiving 262144 pivels starting in 262144 from 1
+T.CsPar (gettimeofday) = 0.001975 sec.
+
+real	0m0,305s
+user	0m0,058s
+sys	0m0,067s
+-----------------------------------------
+MPI -r 2000 -c 3000
+-----------------------------------------
+Bandera-MPI Task 0: NTasks=1.
+Rows=10240, Cols=10240, Output=(null).
+--------------------------------------------------------
+DivideMBetweenNForMe: Me=0,N=1,M=104857600.
+Task 0 out of 1, responsible of 104857600 pixels: [0,104857599].
+Bandera_Function: Task 0, pixels 0 to 104857599, Rows=10240, Cols=10240.
+T.CsPar (gettimeofday) = 0.368658 sec.
+
+real	0m0,701s
+user	0m0,382s
+sys	0m0,085s
+Bandera-MPI Task 0: NTasks=2.
+Rows=10240, Cols=10240, Output=(null).
+--------------------------------------------------------
+DivideMBetweenNForMe: Me=0,N=2,M=104857600.
+Task 0 out of 2, responsible of 52428800 pixels: [0,52428799].
+Bandera_Function: Task 0, pixels 0 to 52428799, Rows=10240, Cols=10240.
+DivideMBetweenNForMe: Me=1,N=2,M=104857600.
+Task 1 out of 2, responsible of 52428800 pixels: [52428800,104857599].
+Bandera_Function: Task 1, pixels 52428800 to 104857599, Rows=10240, Cols=10240.
+Task 0: Receiving 52428800 pivels starting in 52428800 from 1
+T.CsPar (gettimeofday) = 0.206996 sec.
+
+real	0m0,507s
+user	0m0,373s
+sys	0m0,127s
+Bandera-MPI Task 0: NTasks=4.
+Rows=10240, Cols=10240, Output=(null).
+--------------------------------------------------------
+DivideMBetweenNForMe: Me=0,N=4,M=104857600.
+Task 0 out of 4, responsible of 26214400 pixels: [0,26214399].
+Bandera_Function: Task 0, pixels 0 to 26214399, Rows=10240, Cols=10240.
+DivideMBetweenNForMe: Me=1,N=4,M=104857600.
+Task 1 out of 4, responsible of 26214400 pixels: [26214400,52428799].
+DivideMBetweenNForMe: Me=2,N=4,M=104857600.
+Task 2 out of 4, responsible of 26214400 pixels: [52428800,78643199].
+DivideMBetweenNForMe: Me=3,N=4,M=104857600.
+Task 3 out of 4, responsible of 26214400 pixels: [78643200,104857599].
+Bandera_Function: Task 2, pixels 52428800 to 78643199, Rows=10240, Cols=10240.
+Bandera_Function: Task 3, pixels 78643200 to 104857599, Rows=10240, Cols=10240.
+Bandera_Function: Task 1, pixels 26214400 to 52428799, Rows=10240, Cols=10240.
+Task 0: Receiving 26214400 pivels starting in 52428800 from 2
+Task 0: Receiving 26214400 pivels starting in 78643200 from 3
+Task 0: Receiving 26214400 pivels starting in 26214400 from 1
+T.CsPar (gettimeofday) = 0.151784 sec.
+
+real	0m0,460s
+user	0m0,524s
+sys	0m0,157s
