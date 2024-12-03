@@ -1,19 +1,21 @@
 # Ejercicio: Mandelbrot MPI.
 
-## A rellenar por el alumno/grupo
- * Nombre y apellidos alumno 1   : 
- * Nombre y apellidos alumno 2   : 
- * Nombre y apellidos alumno 3   : 
- * Mayoría en GTA1, GTA2 o GTA3  : 
- * Nombre de grupo de actividades: 
+# A rellenar por el alumno/grupo
+## Nombre y apellidos alumno 1   : < Franco Sergio Pereyra >
+## Nombre y apellidos alumno 2   : < Rosa Maria Lopez Garcia>
+## Nombre y apellidos alumno 3   : < David Matarin Guill>
+## Mayoría en GTA1, GTA2 o GTA3  : < GT2 >
+## Nombre de grupo de actividades: < GT2-2 y GT3-2 >
 
+
+# Descripción de la arquitectura utilizada:
 ## Arquitectura: 
- * Microprocesador:
- * Número de núcleos:
- * Cantidad de subprocesos por núcleo:
- * Tiene hyperthreading (SMT) activado en BIOS:
- * HDD/SDD: 
- * RAM:
+  * Microprocesador: Intel core I5-10500 CPU @ 3.10GHz
+  * Número de núcleos: 6
+  * Cantidad de subprocesos por nucleo: 12
+  * Tiene hyperthreading (SMT) activado en BIOS:Si
+  * HDD/SDD: 500G
+  * RAM:16G
  * Se usa máquina virtual:
     - Número de cores:
     - RAM: 
@@ -107,47 +109,44 @@ donde
      * Sí, los números de filas pueden diferir ligeramente entre las hebras en una misma ejecución debido a:
 
     	* Desbalance en la distribución del trabajo:
+     
        		* El método de distribución de filas podría ser dinámico, dependiendo de la velocidad de procesamiento de cada hebra y las características del sistema.
+           
  	*   Sincronización de las hebras:
-       		* Si se utiliza una estrategia de "work stealing" o distribución dinámica, las hebras más rápidas toman más trabajo cuando otras tardan más en completarlo.
+
+  		*  Si se utiliza una estrategia de "work stealing" o distribución dinámica, las hebras más rápidas toman más trabajo cuando otras tardan más en completarlo.
  
     
     - **¿Es el número de filas realizado por las hebras de una ejecución similar? ¿Porqué?**
- 
-      * En general, el número de filas realizado por las hebras es similar pero no exactamente igual. Esto ocurre porque:
 
+      * En general, el número de filas realizado por las hebras es similar pero no exactamente igual. Esto ocurre porque:
+        
   	*  El tamaño total de filas es divisible por el número de hebras (1024 ÷ 4 = 256), pero los bordes pueden no ser equitativos si el proceso es dinámico.
   	*  Las hebras suelen trabajar en bloques distribuidos uniformemente, pero pequeñas diferencias surgen debido a:
-      		* Carga dinámica del sistema.
-       		* Procesamiento de filas que requieren más iteraciones (pixeles complejos): Algunas filas pueden necesitar más tiempo para calcular valores del conjunto de Mandelbrot.
+   		*   Carga dinámica del sistema.
+     		*   Procesamiento de filas que requieren más iteraciones (pixeles complejos): Algunas filas pueden necesitar más tiempo para calcular valores del conjunto de Mandelbrot.
 
 
 4. **¿Porqué el tiempo paralelo con dos tareas (-np 2) es siempre peor que el secuencial?**
-
-	* El tiempo paralelo con dos tareas puede ser peor que el secuencial debido a:
-
-    		* Sobrecarga de Comunicación:
-       			* En la versión paralela, las tareas deben coordinarse a través del sistema MPI, lo que introduce tiempo extra para enviar, recibir y sincronizar datos.
-         
-
-   	* Desbalance de Carga:
-       		* Si las filas distribuidas entre las dos tareas no están perfectamente equilibradas, una tarea podría terminar antes y quedarse esperando que la otra complete su parte.
-
-
-   	* Limitación del Escalado:
-       		* Con dos tareas, la capacidad de dividir eficientemente el trabajo se reduce.
+   * El tiempo paralelo con dos tareas puede ser peor que el secuencial debido a:
+   
+   	* Sobrecarga de Comunicación En la versión paralela, las tareas deben coordinarse a través del sistema MPI, lo que introduce tiempo extra para enviar, recibir y sincronizar datos.
+   
+   	* Desbalance de Carga: Si las filas distribuidas entre las dos tareas no están perfectamente equilibradas, una tarea podría terminar antes y quedarse esperando que la otra complete su parte.
+   
+   	* Limitación del Escalado: Con dos tareas, la capacidad de dividir eficientemente el trabajo se reduce.
  
  
-5. **¿Tiene ventajas su paralelización?**
+6. **¿Tiene ventajas su paralelización?**
 	* La paralelización tiene ventajas claras, especialmente en problemas de gran escala, pero para aprovecharla al máximo es necesario:
 
    		* Minimizar la sobrecarga de comunicación.
-    		* Balancear eficientemente la carga de trabajo.
+     		* Balancear eficientemente la carga de trabajo.
    		* Escoger problemas que requieran suficiente computación para superar el costo de la comunicación.
 
 	* En casos pequeños o para un bajo número de iteraciones, la paralelización puede no ser tan efectiva o incluso contraproducente. Sin embargo, para configuraciones complejas o en sistemas con muchos núcleos, es altamente más ventajosa.
 	
-6. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
+7. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
 
  	* si 
 
