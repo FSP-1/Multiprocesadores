@@ -1,20 +1,22 @@
-# Ejercicio: Bandera MPI.
+# Ejercicio: Bandera OMP.
 
-## A rellenar por el alumno/grupo
- * Nombre y apellidos alumno 1   : 
- * Nombre y apellidos alumno 2   : 
- * Nombre y apellidos alumno 3   : 
- * Mayoría en GTA1, GTA2 o GTA3  : 
- * Nombre de grupo de actividades: 
+# A rellenar por el alumno/grupo
+## Nombre y apellidos alumno 1   : < Franco Sergio Pereyra >
+## Nombre y apellidos alumno 2   : < Rosa Maria Lopez Garcia>
+## Nombre y apellidos alumno 3   : < David Matarin Guill>
+## Mayoría en GTA1, GTA2 o GTA3  : < GT2 >
+## Nombre de grupo de actividades: < GT2-2 y GT3-2 >
 
+
+# Descripción de la arquitectura utilizada:
 ## Arquitectura: 
-  * Microprocesador:
-  * Número de núcleos:
-  * Cantidad de subprocesos por nucleo:
-  * Tiene hyperthreading (SMT) activado en BIOS:
-  * HDD/SDD: 
-  * RAM:
-  * Se usa máquina virtual:
+  * Microprocesador: Intel core I5-10500 CPU @ 3.10GHz
+  * Número de núcleos: 6
+  * Cantidad de subprocesos por nucleo: 12
+  * Tiene hyperthreading (SMT) activado en BIOS:Si
+  * HDD/SDD: 500G
+  * RAM:16G
+  * Se usa máquina virtual: NO
     - Número de cores:
     - RAM: 
     - Capacidad HDD: 
@@ -111,10 +113,10 @@ $ time ./Bandera -r <Rows> -c <Cols>
 
 | Ejecución   | -r 1024 -c 1024 | -r Rows -c Cols |
 | ----------- | --------------- | --------------- |
-|T.Sec        |  0.021          |  0.302          |
-|T.CsPar      |  0.0126         |  0.20           |
-|SpA(2)       |  1.429          |  1.495          |
-|SpA(4)       |  1.81           |  1.99           |
+|T.Sec        |  0.004          |  0.305          |
+|T.CsPar      |  0.002          |  0.205          |
+|SpA(2)       |  1.429          |  1.506          |
+|SpA(4)       |  1.812          |  2.016          |
 
 donde
  * T.Sec: El wall-clock time (tiempo total) del programa secuencial. Parte real del $time Bandera ... 
@@ -133,21 +135,22 @@ $ time mpirun -np <p> ./Bandera-MPI -r <Rows> -c <Cols>
 ```
 ime mpirun -np 2 -host 192.168.6.51:1 -host 192.168.6.52:1 ./Bandera-MPI -r 7680 -c 10240 -o prueba
 
-| Ejecución       | -r 768 -c 1024 | -r Rows -c Cols |
+| Ejecución       | -r 1024 -c 1024| -r Rows -c Cols |
 | --------------- | -------------- | --------------- | 
-|T.Sec            |                |                 |
-|T(1)             |                |                 |
-| Mem. Task=0(Gb) |                |                 |
+|T.Sec            |        0.004   |        0.305    |
+|T(1)             |      0.00392   |     0.368658    |
+| Mem. Task=0(Gb) |      1048576   |     10485760    |
 | --------------- | -------------- | --------------- |
-|T(2)             |                |                 |
-| Mem. Task>0(Gb) |                |                 |
+|T(2)             |        0.002   |     0.206996    |
+| Mem. Task>0(Gb) |      1048576   |     10485760    |
 | --------------- | -------------- | --------------- |
-|T(4)             |                |                 |
-| Mem. Task>0(Gb) |                |                 |
+|T(4)             |     0.001975   |     0.151784    |
+| Mem. Task>0(Gb) |      1048576   |     10485760    |
 | --------------- | -------------- | --------------- |
-|Sp(1)            |                |                 |
-|Sp(2)            |                |                 |
-|Sp(4)            |                |                 |
+|Sp(1)            |        1.024   |  0.827          |
+|Sp(2)            |  	   1.867   |  1.473          |
+|Sp(4)            |        2.025   |  2.009          |
+
 
 Donde 
 * T.Sec: El wall-clock time (tiempo total) del programa secuencial. Parte real del `$ time ./Bandera ...` 
@@ -158,9 +161,9 @@ Donde
 
 
 5. **¿Es Sp(p)> SpA(p)? ¿Cuales pueden ser los motivos?**
-
+Sí. 
 6. **Explica como has calculado las cantidades de memoria consumidas por la tarea 0 y las otras tareas.**
-
+De base, hay que tener en cuenta que la cantidad de píxeles usada es la multiplicación de los píxeles por cada fila y los píxeles por cada columna. 
 7. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
 
 - - - 
