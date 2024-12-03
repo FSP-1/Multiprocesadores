@@ -161,11 +161,22 @@ Donde
 
 
 5. **¿Es Sp(p)> SpA(p)? ¿Cuales pueden ser los motivos?**
-Sí. 
+Sí, Sp(p)Sp​(p), que es la aceleración paralela con carga total, suele ser mayor que SpA(p)SpA​(p), que es la aceleración paralela considerando solo las tareas activas. Esto ocurre porque Sp(p)Sp​(p) incluye el impacto de las tareas que no están procesando datos activamente (procesos inactivos que manejan 0 píxeles), mientras que SpA(p)SpA​(p) considera únicamente los procesos que realizan algún trabajo.
 6. **Explica como has calculado las cantidades de memoria consumidas por la tarea 0 y las otras tareas.**
-De base, hay que tener en cuenta que la cantidad de píxeles usada es la multiplicación de los píxeles por cada fila y los píxeles por cada columna. 
-7. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
+La memoria consumida se calcula considerando las asignaciones dinámicas y estáticas en el código. Para la tarea 0, se manejan los arreglos completos para las tres matrices RGB (ppRedppRed, ppGreenppGreen, ppBlueppBlue), cada una de tamaño Rows×ColsRows×Cols.
+Memorias:
+Memoria tarea 0=3×Rows×Cols×sizeof(char)
 
+Para las demás tareas, cada una procesa NPixels píxeles, calculado en DivideMBetweenNForMe. Además, solo se asignan matrices locales (ppRed y ppGreen) del tamaño NPixels.
+Memoria total por tarea:
+Memoria tarea i=2×NPixels×sizeof(char)
+
+Nota:
+
+    Para tareas inactivas (NPixels=0NPixels=0), el consumo de memoria dinámica es cero.
+    El uso de funciones como GetMem asegura que las matrices estén inicializadas a 0.
+7. **¿Has hecho un *make clean* y borrado todas los ficheros innecesarios (imágenes, etc) para la entrega antes de comprimir?**
+Sí, realizar un make clean es esencial antes de comprimir para evitar incluir archivos temporales o innecesarios que incrementen el tamaño del archivo entregado. Esto incluye el archivo objeto generado durante la compilación, las imagenes y archivos de salida de la ejecución y los archivos de respaldo o logs.  
 - - - 
 
 ### Como ver este .md 
