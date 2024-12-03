@@ -161,7 +161,7 @@ Donde
 
 
 5. **¿Es Sp(p)> SpA(p)? ¿Cuales pueden ser los motivos?**
-* Sí, Sp(p)Sp​(p), que es la aceleración paralela con carga total, suele ser mayor que SpA(p)SpA​(p), que es la aceleración paralela considerando solo las tareas activas. Esto ocurre porque Sp(p)Sp​(p) incluye el impacto de las tareas que no están procesando datos activamente (procesos inactivos que manejan 0 píxeles), mientras que SpA(p)SpA​(p) considera únicamente los procesos que realizan algún trabajo.
+* Sí, Sp(p), que es la aceleración paralela con carga total, suele ser mayor que SpA(p), que es la aceleración paralela considerando solo las tareas activas. Esto ocurre porque Sp(p) incluye el impacto de las tareas que no están procesando datos activamente (procesos inactivos que manejan 0 píxeles), mientras que SpA(p) considera únicamente los procesos que realizan algún trabajo.
 6. **Explica como has calculado las cantidades de memoria consumidas por la tarea 0 y las otras tareas.**
 * La memoria consumida se calcula considerando las asignaciones dinámicas y estáticas en el código. Para la tarea 0, se manejan los arreglos completos para las tres matrices RGB (ppRedppRed, ppGreenppGreen, ppBlueppBlue), cada una de tamaño Rows×ColsRows×Cols.
 Memorias:
